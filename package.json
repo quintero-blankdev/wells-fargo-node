@@ -1,22 +1,26 @@
 {
-  "name": "wellsfargo",
+  "name": "wf-api",
   "version": "1.0.0",
-  "description": "wellsfargo app",
+  "description": "Wells Fargo API connection",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "test": "nodemon index.js",
+    "shopify": "shopify",
+    "build": "shopify app build",
+    "dev": "shopify app dev",
+    "info": "shopify app info",
+    "scaffold": "shopify app scaffold",
+    "deploy": "shopify app deploy"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@shopify/app": "^3.3.3",
+    "@shopify/cli": "^3.3.3",
     "express": "^4.18.1",
     "node-fetch": "^3.2.9",
     "nodemon": "^2.0.19",
-    "oauth2-server": "^3.1.1",
-    "simple-oauth2": "^4.3.0",
-    "uuid": "^8.3.2",
-    "uuid-base64": "^1.0.0"
+    "uuid": "^8.3.2"
   }
 }
