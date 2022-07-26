@@ -66,8 +66,7 @@ async function creditApplication() {
 
 
 
-
-
+//Run Servers
 app.get('/', function (req, res) {
     res.send('Hello World!');
 });
