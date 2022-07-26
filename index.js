@@ -1,6 +1,8 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import { v4 as uuidv4 } from "uuid";
+import UserAgent from 'user-agents';
+import ip from 'ip';
 
 
 const app = express();
@@ -8,22 +10,56 @@ const app = express();
 
 // Oauth2 Code
 
-const id = Buffer.from('rLb5ZiM1GM31BSAGG9uQFpDs5RMql0xE:AIolAuwdqHRl9q6p').toString('base64');
+const id = Buffer.from('j1QArbI6z1RbaGcHShXcXxk0TpyoVqsW:jtVylVejjMB6jYe1').toString('base64');
 
 const params = new URLSearchParams()
 params.append('grant_type', 'client_credentials')
+params.append('scope', 'AUTH-SessionToken')
+params.append('PLCCA-Prequalifications', 'true')
+params.append('PLCCA-PLCCA-Applications', 'true')
+params.append('PLCCA-Transactions-Term', 'true')
+params.append('PLCCA-Account-Details', 'true')
+params.append('PLCCA-Payment-Calculations', 'true')
+params.append('PLCCA-SDK-logs PLCCA-Offers-Search', 'true')
+params.append('PLCCA-Transactions-Authorization', 'true')
+params.append('DOCVRFY', 'true')
 
 const url = 'https://api-sandbox.wellsfargo.com/';
+var token = null
+const vm = this
 
 async function createApiAuth() {
     const response = await fetch(url + 'oauth2/v1/token', {
         method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': `Basic ${id}`},
-        body: params
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Basic ${id}`,
+            'gateway-entity-id': '2427476133-9d03b-ae4b8',
+            'client-request-id': `${uuidv4()}`
+        },
+        body: "grant_type=client_credentials&scope=AUTH-SessionToken PLCCA-Prequalifications PLCCA-Applications PLCCA-Transactions-Term PLCCA-Account-Details PLCCA-Payment-Calculations PLCCA-SDK-logs PLCCA-Offers-Search PLCCA-Transactions-Authorization DOCVRFY",
     });
-    const data = await response.json();
+    const data = await response.json()
+    token = data.token_type + " " + data.access_token
+    console.log(token)
+    generateSesionToken(token)
+}
 
-    console.log(data);
+async function generateSesionToken() {
+    const userAgent = new UserAgent();
+    console.log(ip.address());
+    const response = await fetch("https://api-sandbox.wellsfargo.com/auth/v1/session-tokens", {
+        body: `{"device_fingerprint":{"ip_address":"${ip.address()}","user_agent":"${userAgent.toString()}"}}`,
+        headers: {
+            'Authorization': token,
+            'gateway-entity-id': '2427476133-9d03b-ae4b8',
+            'client-request-id': `${uuidv4()}`,
+            'Content-Type': 'application/json'
+        },
+        method: "POST"
+      })
+      const data1 = await response.json();
+      console.log(data1);
 }
 
 
@@ -33,7 +69,7 @@ async function customerPrequalify() {
     const response = await fetch(url + 'credit-cards/private-label/new-accounts/v2/prequalifications', {
         method: 'POST',
         headers: {
-            'Authorization': 'Bearer DOgMAgVjprIi349q7UCHWvbNKWBj',
+            'Authorization': token,
             'gateway-entity-id': '2427476133-9d03b-ae4b8',
             'client-request-id': `${uuidv4()}`,
             'Content-Type': 'application/json'
@@ -47,11 +83,11 @@ async function customerPrequalify() {
 
 //Submit a credit application
 
-async function creditApplication() {
+async function creditApplication(token) {
     const response = await fetch(url + 'credit-cards/private-label/new-accounts/v2/applications', {
         method: 'POST',
         headers: {
-            'Authorization': 'Bearer DOgMAgVjprIi349q7UCHWvbNKWBj',
+            'Authorization': token ,
             'gateway-entity-id': '2427476133-9d03b-ae4b8',
             'client-request-id': `${uuidv4()}`,
             'Content-Type': 'application/json'
@@ -71,6 +107,6 @@ app.get('/', function (req, res) {
     res.send('Hello World!');
 });
 app.listen(3000, function () {
-    creditApplication()
+    createApiAuth()
     console.log('Example app listening on port 3000!');
 });
