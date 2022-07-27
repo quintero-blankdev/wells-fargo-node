@@ -7,6 +7,14 @@ import ip from 'ip';
 
 const app = express();
 
+app.set('port', 1212);
+app.use(express.urlencoded({
+    extended: false
+}));
+
+app.use(bodyParser.json());
+
+app.use(require('./routes/index'));
 
 // Oauth2 Code
 
@@ -149,7 +157,7 @@ async function creditApplication(token) {
 app.get('/', function (req, res) {
     res.send('Hello World!');
 });
-app.listen(3000, function () {
-    createApiAuth()
-    console.log('Example app listening on port 3000!');
+app.listen(app.get('port'), function () {
+    // createApiAuth()
+    console.log(`Example app listening on port ${app.get('port')}!`);
 });
