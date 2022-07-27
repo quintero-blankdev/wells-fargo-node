@@ -92,7 +92,50 @@ async function creditApplication(token) {
             'client-request-id': `${uuidv4()}`,
             'Content-Type': 'application/json'
         },
-        body: '{\n  "return_URL": "https://retailservices.wellsfargo.com",\n  "merchant_number": "577442107000010",\n  "transaction_code": "A6",\n  "requested_credit_limit": 99,\n  "main_applicant": {\n    "first_name": "Mary",\n    "last_name": "Smith",\n    "middle_initial": "A",\n    "date_of_birth": "1986-31-31",\n    "ssn": "999999994",\n    "annual_income": 100,\n    "home_phone": "9998887777",\n    "work_phone": "9998887777",\n    "address": {\n      "address_line_1": "Apt. 456",\n      "address_line_2": "123 First Street",\n      "city": "Des Moines",\n      "state_code": "IA",\n      "postal_code": "50322"\n    }\n  },\n  "joint_applicant": {\n    "first_name": "Marie",\n    "last_name": "Tester",\n    "middle_initial": "P",\n    "date_of_birth": "1986-01-01",\n    "ssn": "999999991",\n    "annual_income": 23,\n    "email_address": "test@gmail.com",\n    "mobile_phone": "7776667777",\n     "home_phone": "7776667777",\n      "work_phone": "7776667777",\n    "address": {\n      "address_line_1": "999 Second Street",\n      "address_line_2": "Apartment B",\n      "city": "West Des Moines",\n      "state_code": "IA",\n      "postal_code": "50322"\n    }\n  },\n "salesperson": "string1233",\n  "language_preference": "E"\n}'
+        body: `{
+            "return_URL": "https://retailservices.wellsfargo.com",
+            "merchant_number": "577442107000010",
+            "transaction_code": "A6",
+            "requested_credit_limit": 99,
+            "main_applicant": {
+                "first_name": "Mary",
+                "last_name": "Smith",
+                "middle_initial": "A",
+                "date_of_birth": "1986-31-31",
+                "ssn": "999999994",
+                "annual_income": 100,
+                "home_phone": "9998887777",
+                "work_phone": "9998887777",
+                "address": {
+                    "address_line_1": "Apt. 456",
+                    "address_line_2": "123 First Street",
+                    "city": "Des Moines",
+                    "state_code": "IA",
+                    "postal_code": "50322"
+                }
+            },
+            "joint_applicant": {
+                "first_name": "Marie",
+                "last_name": "Tester",
+                "middle_initial": "P",
+                "date_of_birth": "1986-01-01",
+                "ssn": "999999991",
+                "annual_income": 23,
+                "email_address": "test@gmail.com",
+                "mobile_phone": "7776667777",
+                "home_phone": "7776667777",
+                "work_phone": "7776667777",
+                "address": {
+                    "address_line_1": "999 Second Street",
+                    "address_line_2": "Apartment B",
+                    "city": "West Des Moines",
+                    "state_code": "IA",
+                    "postal_code": "50322"
+                }
+            },
+            "salesperson": "string1233",
+            "language_preference": "E"
+        }`
     });
     const data1 = await response.json();
 

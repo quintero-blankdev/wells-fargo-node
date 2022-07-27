@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="wells_card_offer"></div>
+    <script src="https://static.wellsfargo.com/websdk/ao/plcc/2.1.latest/public/javascripts/wfg-sdk-plcc-bootstrap.min.js"></script>
+    <script>
+        var WF_AO_SDK_Config = {
+        secureConfigurationUrl: '{url to your secure-configuration service}',
+        brandIdentifier: '{your brand identifier}',
+        targetDivId: 'wells_card_offer',
+        scrollingContainerId: 'wf-frame-container',
+        displayIntro: false,
+        displayPrequalification: true,
+        displayApplication: false,
+        merchantNumber: '{your merchant number received during onboarding}',
+        customerSupportPhoneNumber: '{your customer support phone number}',
+        sdkVersion: '2.1.latest',
+        environment: 'SANDBOX',
+        partnerHeaders:[
+          {
+            name: '{header name}',
+            value: '{header value}'
+          },
+        ],
+        prefillButton: false | true,
+        prefill: {
+          address_line_1: "{address_line_1}",
+          address_line_2: "{address_line_2}",
+          city: "{city}",
+          email: "{email}",
+          first_name: "{first_name}",
+          last_name: "{last_name}",
+          postal_code: "{postal_code}",
+          state_code: "{state_code}"
+        },
+        callbacks: {
+          general: {
+            prefill: function(data) { /* merchant code */ }
+          },
+          prequalification: {
+            start: function(data) { /* merchant code */ },
+            start_over: function(data) { /* merchant code */ },
+            approved: function(data) { /* merchant code */ },
+            denied: function(data) { /* merchant code */ },
+            recoverable_error: function(data) { /* merchant code */ },
+            error: function(data) { /* merchant code */ },
+            approved_displayed: function(data) { /* merchant code */ },
+            proceed: function(data) { /* merchant code */ }
+          }
+        }
+      }
+      
+      WF_SDK_BOOTSTRAP.initialize(WF_AO_SDK_Config);
+      </script>
+</body>
+</html>
