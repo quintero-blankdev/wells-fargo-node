@@ -1,20 +1,21 @@
-import express from 'express';
-import fetch from 'node-fetch';
-import { v4 as uuidv4 } from "uuid";
-import UserAgent from 'user-agents';
-import ip from 'ip';
+const express = require('express');
+const fetch = require('node-fetch');
+const uuid = require('uuid');
+const UserAgent = require('user-agents');
+var ip = require('ip');
+var bodyParser = require('body-parser')
 
 
 const app = express();
 
-app.set('port', 1212);
+app.set('port', 8080);
 app.use(express.urlencoded({
     extended: false
 }));
 
 app.use(bodyParser.json());
 
-app.use(require('./routes/index'));
+app.use(require('./routes/index.js'));
 
 // Oauth2 Code
 
@@ -43,7 +44,7 @@ async function createApiAuth() {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization': `Basic ${id}`,
             'gateway-entity-id': '2427476133-9d03b-ae4b8',
-            'client-request-id': `${uuidv4()}`
+            'client-request-id': `${uuid.v4()}`
         },
         body: "grant_type=client_credentials&scope=AUTH-SessionToken PLCCA-Prequalifications PLCCA-Applications PLCCA-Transactions-Term PLCCA-Account-Details PLCCA-Payment-Calculations PLCCA-SDK-logs PLCCA-Offers-Search PLCCA-Transactions-Authorization DOCVRFY",
     });
@@ -61,7 +62,7 @@ async function generateSesionToken() {
         headers: {
             'Authorization': token,
             'gateway-entity-id': '2427476133-9d03b-ae4b8',
-            'client-request-id': `${uuidv4()}`,
+            'client-request-id': `${uuid.v4()}`,
             'Content-Type': 'application/json'
         },
         method: "POST"
@@ -79,7 +80,7 @@ async function customerPrequalify() {
         headers: {
             'Authorization': token,
             'gateway-entity-id': '2427476133-9d03b-ae4b8',
-            'client-request-id': `${uuidv4()}`,
+            'client-request-id': `${uuid.v4()}`,
             'Content-Type': 'application/json'
         },
         body: '{\n        "merchant_number":"577442114000045",\n        "transaction_code": "IIS",\n        "main_applicant": {\n          "first_name": "GREGORY",\n          "last_name": "SEAMSTER",\n          "last_four_ssn": "9999",\n          "email":"demo@wellsfargo.com",\n\n          "address": {\n            "address_line_1": "2524 5TH AV",\n            "city": "FORT WORTH",\n            "state_code": "TX",\n            "postal_code": "76110"\n          }\n        },\n        "entry_point": "WEB",\n        "consent_datetime":"2019-01-09",\n        "return_URL":"http://www.wellsfargo.com"\n      }'
@@ -97,7 +98,7 @@ async function creditApplication(token) {
         headers: {
             'Authorization': token ,
             'gateway-entity-id': '2427476133-9d03b-ae4b8',
-            'client-request-id': `${uuidv4()}`,
+            'client-request-id': `${uuid.v4()}`,
             'Content-Type': 'application/json'
         },
         body: `{
@@ -158,6 +159,6 @@ app.get('/', function (req, res) {
     res.send('Hello World!');
 });
 app.listen(app.get('port'), function () {
-    // createApiAuth()
+    createApiAuth()
     console.log(`Example app listening on port ${app.get('port')}!`);
 });
